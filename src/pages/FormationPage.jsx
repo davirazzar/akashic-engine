@@ -76,14 +76,25 @@ export default function FormationPage() {
 
   const handleSlot = (i) => {
     const next = [...grid];
+
     if (active) {
-      const existing = next.findIndex((u) => u?.id === active.id);
-      if (existing !== -1) next[existing] = null;
+      const unitsOnBoard = next.filter((u) => u !== null);
+      const isAlreadyOnBoard = next.some((u) => u?.id === active.id);
+
+      if (unitsOnBoard.length === 4 && !isAlreadyOnBoard) {
+        alert("Maximum of 4 units allowed in the formation!");
+        return;
+      }
+
+      const existingIndex = next.findIndex((u) => u?.id === active.id);
+      if (existingIndex !== -1) next[existingIndex] = null;
+
       next[i] = active;
       setActive(null);
     } else {
       next[i] = null;
     }
+
     setGrid(next);
   };
 
